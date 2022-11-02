@@ -1,8 +1,9 @@
 //required modules
 const express = require("express");
-let uniquid = require("uniquid");
+let uniqid = require("uniquid");
 const fs = require("fs");
 let db = require("./db/db.json");
+
 //PORT variable
 const PORT = process.env.PORT || 3001;
 
@@ -25,24 +26,36 @@ app.get("/notes", (req, res) => {
 //Post routes
 
 app.post("/api/notes", (req, res) => {
+  const { title, text } = req.body;
+
   if (req.body) {
     const newNote = {
-      id: uniquid(),
+      id: uniqid(),
       title,
       text,
     };
+
     db.push(newNote);
     writeToFile("./db/db.json", db);
-    res.json("Note was added");
+    res.json("Note Added Succesfully");
   } else {
-    res.errored("Note could not be added!");
+    res.error("Could not add new Note");
   }
 });
+// Delete Route
+app.delete("/api/notes/:id", (req, res) => {
+  const deleteNote = req.params.id;
 
-//Write to file
-const writeToFile = (dest, cont) =>
-  fs.writeFile(dest, JSON.stringify(cont, null, 4), (err) =>
-    err ? console.log(err) : console.info(`\nData written to ${dest}`)
+  db = db.filter((note) => note.id != deleteNote);
+
+  writeToFile("./db/db.json", db);
+  res.json("Note was Succesfully Deleted");
+});
+
+//Write to File
+const writeToFile = (destination, content) =>
+  fs.writeFile(dest, JSON.stringify(content, null, 4), (err) =>
+    err ? console.log(err) : console.info(`\nData written to ${destination}`)
   );
 
 //app.listen
