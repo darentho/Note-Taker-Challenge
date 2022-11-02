@@ -42,7 +42,7 @@ app.post("/api/notes", (req, res) => {
 //Write to file
 const writeToFile = (dest, cont) =>
   fs.writeFile(dest, JSON.stringify(cont, null, 4), (err) =>
-    err ? console.log(err) : console.info(`\nData written to ${destination}`)
+    err ? console.log(err) : console.info(`\nData written to ${dest}`)
   );
 
 //app.listen
