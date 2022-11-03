@@ -43,19 +43,19 @@ app.post("/api/notes", (req, res) => {
   }
 });
 // Delete Route
-app.delete("/api/notes/:id", (req, res) => {
+app.delete(`/api/notes/:id`, (req, res) => {
   const deleteNote = req.params.id;
 
   db = db.filter((note) => note.id != deleteNote);
 
   writeToFile("./db/db.json", db);
-  res.json("Note was Succesfully Deleted");
+  res.json("Note Deleted successfully");
 });
 
 //Write to File
-const writeToFile = (destination, content) =>
+const writeToFile = (dest, cont) =>
   fs.writeFile(dest, JSON.stringify(content, null, 4), (err) =>
-    err ? console.log(err) : console.info(`\nData written to ${destination}`)
+    err ? console.log(err) : console.info(`\nData written to ${dest}`)
   );
 
 //app.listen
