@@ -1,11 +1,16 @@
 //required modules
 const express = require("express");
-let uniqid = require("uniquid");
+let uniqid = require("uniqid");
 const fs = require("fs");
 let db = require("./db/db.json");
 
 //PORT variable
 const PORT = process.env.PORT || 3001;
+
+const writeToFile = (destination, content) =>
+  fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
+    err ? console.error(err) : console.info(`\nData written to ${destination}`)
+  );
 
 //middleware
 const app = express();
@@ -51,12 +56,6 @@ app.delete(`/api/notes/:id`, (req, res) => {
   writeToFile("./db/db.json", db);
   res.json("Note Deleted successfully");
 });
-
-//Write to File
-const writeToFile = (dest, cont) =>
-  fs.writeFile(dest, JSON.stringify(content, null, 4), (err) =>
-    err ? console.log(err) : console.info(`\nData written to ${dest}`)
-  );
 
 //app.listen
 app.listen(PORT, () =>
